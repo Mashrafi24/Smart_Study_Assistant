@@ -181,11 +181,106 @@ Open [http://localhost:5000](http://localhost:5000), choose a user ID, and begin
 - Richer progress analytics and teacher dashboards.
 - Evaluation of grading quality and learning outcomes with student testing.
 
-## Author
+# 🎓 SmartStudy Assistant
 
-**Imran Hosen**  
-GitHub: [@IMRAN-8](https://github.com/IMRAN-8)
+## 📖 প্রজেক্ট পরিচিতি
 
-## License
+**SmartStudy Assistant** হলো একটি AI-based study platform, যা শিক্ষার্থীদের বিষয় বুঝতে, নিজের জ্ঞান যাচাই করতে এবং দুর্বল অংশগুলো আবার শিখতে সাহায্য করে।
 
-This project is distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
+## ✨ কীভাবে কাজ করে?
+
+1. শিক্ষার্থী কোনো **topic** লিখবে অথবা **PDF** আপলোড করবে।
+2. AI বিষয়টি সহজভাবে **বুঝিয়ে দেবে**।
+3. সেই বিষয় থেকে **প্রশ্ন তৈরি করে পরীক্ষা নেবে**।
+4. উত্তরের ভিত্তিতে শিক্ষার্থীর **দুর্বল অংশ শনাক্ত করবে**।
+5. দুর্বল অংশ আবার সহজভাবে **শেখাবে**।
+6. পরবর্তী রিভিশনের জন্য **সময় নির্ধারণ করবে**।
+
+এর মূল উদ্দেশ্য হলো শিক্ষার্থীদের আরও সহজ, সংগঠিত এবং কার্যকরভাবে পড়াশোনা করতে সাহায্য করা।
+
+## 📁 কোন ফাইল কী কাজ করে?
+
+| ফাইল | কাজ |
+| --- | --- |
+| `public/index.html` | ওয়েবসাইটের মূল কাঠামো—হেডার, মেনু ও কনটেন্ট দেখানোর জায়গা। |
+| `public/style.css` | রং, ফন্ট, বাটন ও পেজের ডিজাইন। |
+| `public/script.js` | বাটনের কাজ, সার্ভারে অনুরোধ পাঠানো এবং প্রশ্ন ও ফলাফল দেখানো। |
+| `server.js` | AI থেকে ব্যাখ্যা আনা, পরীক্ষা তৈরি, উত্তর যাচাই ও তথ্য সংরক্ষণ। |
+| `schema.sql` | ডেটাবেসের টেবিল ও তথ্যের কাঠামো নির্ধারণ। |
+| `package.json` | প্রয়োজনীয় প্যাকেজ এবং প্রজেক্ট চালুর কমান্ড। |
+
+## 💡 একটি উদাহরণ
+
+ধরো, তুমি **Photosynthesis** পড়তে চাও।
+
+1. Topic লিখে **Start studying** চাপবে।
+2. `script.js` তোমার অনুরোধ `server.js`-এ পাঠাবে।
+3. সার্ভার **OpenRouter**-এর মাধ্যমে AI model থেকে ব্যাখ্যা আনবে।
+4. AI বিষয়টি থেকে **MCQ ও সংক্ষিপ্ত প্রশ্ন** তৈরি করবে।
+5. উত্তর জমা দিলে:
+   - **MCQ:** কোড দিয়ে সংরক্ষিত সঠিক উত্তরের সঙ্গে মিলিয়ে দেখা হবে।
+   - **সংক্ষিপ্ত উত্তর:** AI দিয়ে মূল্যায়ন করা হবে।
+6. ভুল বা কম নম্বর পাওয়া প্রশ্নের বিষয় দেখে কোড দুর্বল অংশ শনাক্ত করবে।
+7. AI সেই অংশ আবার বুঝিয়ে দেবে এবং কোড রিভিশনের সময় নির্ধারণ করবে।
+
+> PDF আপলোড করলে প্রথমে `pdf-parse` দিয়ে তার লেখা সংগ্রহ করা হয়।
+
+## 🗄️ ডেটাবেস কেন প্রয়োজন?
+
+**PostgreSQL/Supabase**-এ নিচের তথ্যগুলো সংরক্ষিত থাকে:
+
+- পড়ার বিষয় ও study session
+- ব্যাখ্যা ও পরীক্ষার প্রশ্ন
+- শিক্ষার্থীর উত্তর ও স্কোর
+- দুর্বল ধারণা ও পুনরায় শেখার বিষয়বস্তু
+- পরবর্তী রিভিশনের তারিখ
+
+এজন্য পরে আগের পড়াশোনার ইতিহাস ও ফলাফল দেখা যায়।
+
+## 🔁 SM-2 কী?
+
+**SM-2** হলো spaced repetition algorithm, যা পরবর্তী রিভিশনের সময় নির্ধারণ করে।
+
+Review করার সময় শিক্ষার্থী নিজের মনে রাখার অবস্থা অনুযায়ী বেছে নেয়:
+
+| Rating | অর্থ |
+| --- | --- |
+| **Again** | মনে করতে পারিনি; আবার পড়তে হবে। |
+| **Hard** | মনে করতে কষ্ট হয়েছে। |
+| **Good** | মোটামুটি ভালোভাবে মনে করতে পেরেছি। |
+| **Easy** | খুব সহজে মনে করতে পেরেছি। |
+
+এই rating এবং আগের review-এর তথ্য অনুযায়ী পরবর্তী রিভিশনের তারিখ হিসাব হয়।
+
+## 🛠️ ব্যবহৃত প্রযুক্তি
+
+| অংশ | প্রযুক্তি |
+| --- | --- |
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js, Express |
+| Database | PostgreSQL / Supabase |
+| AI Integration | OpenRouter API |
+| PDF Text Extraction | pdf-parse |
+| Revision Scheduling | SM-2 Algorithm |
+
+## ❓ প্রেজেন্টেশনের সাধারণ প্রশ্ন
+
+### নিজে কি AI model তৈরি করা হয়েছে?
+
+এই প্রজেক্টে আগে থেকে থাকা AI model API-এর মাধ্যমে ব্যবহার করা হয়েছে। অ্যাপটি সেই AI-কে ব্যাখ্যা, পরীক্ষা, উত্তর মূল্যায়ন ও পুনরায় শেখানোর ধাপগুলোর সঙ্গে যুক্ত করেছে।
+
+### Login ব্যবস্থা আছে?
+
+বর্তমানে **User ID** দিয়ে ব্যবহারকারীদের তথ্য আলাদা রাখা হয়। Password-ভিত্তিক authentication নেই; তাই এটি নিরাপদ login system নয়।
+
+### দুর্বল অংশ কীভাবে শনাক্ত হয়?
+
+প্রশ্নের সঙ্গে থাকা concept tag এবং উত্তরের মূল্যায়ন ব্যবহার করে কোড শনাক্ত করে কোন ধারণায় শিক্ষার্থীর আরও অনুশীলন প্রয়োজন।
+
+## 🎤 Short Presentation Line
+
+> SmartStudy Assistant is an AI-powered learning platform that helps students understand topics, test their knowledge, identify weaknesses, and review difficult concepts through personalized revision scheduling.
+
+## 🔗 GitHub Repository
+
+[SmartStudy Assistant](https://github.com/IMRAN-8/smartstudy-assistant)
